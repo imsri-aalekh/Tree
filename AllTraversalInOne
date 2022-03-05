@@ -1,0 +1,95 @@
+package Tree;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+class PairTraversal
+{
+    TreeNode node;
+    int num;
+    PairTraversal(TreeNode _node , int _num)
+    {
+        node = _node;
+        num = _num;
+    }
+}
+public class AllTraversal {
+    void allTraversal(TreeNode root)
+    {
+        if(root == null)
+            return ;
+        List<Integer> pre = new ArrayList<>();
+        List<Integer> in = new ArrayList<>();
+        List<Integer> post = new ArrayList<>();
+        Deque<PairTraversal> st = new ArrayDeque<>();
+        st.push(new PairTraversal(root,1));
+        while(!st.isEmpty())
+        {
+            PairTraversal curr = st.peek();
+            if(curr.num == 1)
+            {
+                pre.add(curr.node.data);
+                curr.num++; // value = 2 , so push it's left
+                if(curr.node.left != null)
+                    st.push(new PairTraversal(curr.node.left,1));
+            }
+            else if(curr.num == 2)
+            {
+                in.add(curr.node.data);
+                curr.num++; // value = 3 , so push it's right
+                if(curr.node.right != null)
+                    st.push(new PairTraversal(curr.node.right,1));
+            }
+            else
+            {
+                post.add(curr.node.data);
+                st.pop();
+            }
+        }
+        System.out.println("Pre Order");
+        for(int i:pre)
+            System.out.print(i+" ");
+        System.out.println("\nIn Order");
+        for(int i:in)
+            System.out.print(i+" ");
+        System.out.println("\nPost Order");
+        for(int i:post)
+            System.out.print(i+" ");
+    }
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode().getTree();
+        new AllTraversal().allTraversal(root);
+    }
+}
+
+//package Tree;
+
+public class TreeNode {
+    int data;
+    TreeNode left;
+    TreeNode right;
+    TreeNode()
+    {
+
+    }
+    TreeNode(int _data)
+    {
+        data = _data;
+        left = right = null;
+    }
+    public TreeNode getTree()
+    {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right =  new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+        root.right.right = new TreeNode(6);
+        root.left.left.left =  new TreeNode(7);
+        root.left.left.right = new TreeNode(8);
+        root.right.right.left = new TreeNode(9);
+        root.right.right.right = new TreeNode(10);
+        return root;
+    }
+}
